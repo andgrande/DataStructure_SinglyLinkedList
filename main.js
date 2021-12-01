@@ -16,7 +16,10 @@ var MyLinkedList = function() {
 MyLinkedList.prototype.get = function(index) {
     let current = this.head;
     let counter = 0;
-    
+    let length = this.getLength();
+
+    if (index >= length) return -1;
+    if (index === 0) return current.val;
     if (!index) return current;
     
     for (let i = 0; i < index; i++) {
@@ -35,6 +38,7 @@ MyLinkedList.prototype.addAtHead = function(val) {
     let node = new Node(val);
     node.next = this.head;
     this.head = node;  
+    
 };
 
 /** 
@@ -44,7 +48,7 @@ MyLinkedList.prototype.addAtHead = function(val) {
 MyLinkedList.prototype.addAtTail = function(val) {
     let current = this.head;
     
-    if (!current) return;
+    if (!current) return this.addAtHead(val);
     
     while (current.next !== null) {
         current = current.next;
@@ -62,6 +66,11 @@ MyLinkedList.prototype.addAtTail = function(val) {
 MyLinkedList.prototype.addAtIndex = function(index, val) {
     let counter = 0;
     let current = this.head;
+    let length = this.getLength(); 
+    
+    if (index === 0) return this.addAtHead(val);
+    if (!current) return;
+    if (index >= length) return this.addAtTail(val);
     
     while(counter < index - 1) {
         if (!current.next) return current;
