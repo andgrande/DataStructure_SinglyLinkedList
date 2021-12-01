@@ -1,12 +1,13 @@
 class Node {
     constructor(val, next) {
-        this.val = val == undefined ? 0 : val;
-        this.next = next == undefined ? null : next;
+        this.val = val === undefined ? 0 : val;
+        this.next = next === undefined ? null : next;
     }
 }
 
 var MyLinkedList = function() {
     this.head = null;
+    this.length = 0;
 };
 
 /** 
@@ -16,9 +17,8 @@ var MyLinkedList = function() {
 MyLinkedList.prototype.get = function(index) {
     let current = this.head;
     let counter = 0;
-    let length = this.getLength();
 
-    if (index >= length) return -1;
+    if (index >= this.length || !current) return -1;
     if (index === 0) return current.val;
     if (!index) return current;
     
@@ -38,7 +38,7 @@ MyLinkedList.prototype.addAtHead = function(val) {
     let node = new Node(val);
     node.next = this.head;
     this.head = node;  
-    
+    this.length ++;
 };
 
 /** 
@@ -46,16 +46,18 @@ MyLinkedList.prototype.addAtHead = function(val) {
  * @return {void}
  */
 MyLinkedList.prototype.addAtTail = function(val) {
-    let current = this.head;
+//     let current = this.head;
     
-    if (!current) return this.addAtHead(val);
+//     if (!current) return this.addAtHead(val);
     
-    while (current.next !== null) {
-        current = current.next;
-    }
+//     while (current.next !== null) {
+//         current = current.next;
+//     }
     
-    let node = new Node(val);
-    current.next = node;
+//     let node = new Node(val);
+//     current.next = node;
+    
+    this.addAtIndex(this.length, val);
 };
 
 /** 
@@ -66,11 +68,10 @@ MyLinkedList.prototype.addAtTail = function(val) {
 MyLinkedList.prototype.addAtIndex = function(index, val) {
     let counter = 0;
     let current = this.head;
-    let length = this.getLength(); 
     
     if (index === 0) return this.addAtHead(val);
     if (!current) return;
-    if (index >= length) return this.addAtTail(val);
+    // if (index >= length) return this.addAtTail(val);
     
     while(counter < index - 1) {
         if (!current.next) return current;
@@ -80,6 +81,7 @@ MyLinkedList.prototype.addAtIndex = function(index, val) {
     
     let node = new Node(val, current.next)
     current.next = node;
+    this.length ++;
 };
 
 /** 
@@ -87,7 +89,7 @@ MyLinkedList.prototype.addAtIndex = function(index, val) {
  * @return {void}
  */
 MyLinkedList.prototype.deleteAtIndex = function(index) {
-    if (index < 0 || index >= this.getLength()) return;
+    if (index < 0 || index >= this.length) return;
     if (index === 0) {
         this.head = this.head.next;
         return;
@@ -98,7 +100,17 @@ MyLinkedList.prototype.deleteAtIndex = function(index) {
         cur = cur.next;
     }
     cur.next = cur.next.next;
+    this.length --;
 };
+
+// MyLinkedList.prototype.getLength = function() {
+//     let len = 0, cur = this.head;
+//     while (cur !== null) {
+//         cur = cur.next;
+//         len++;
+//     }
+//     return len;
+// };
 
 /** 
  * Your MyLinkedList object will be instantiated and called as such:
@@ -109,12 +121,3 @@ MyLinkedList.prototype.deleteAtIndex = function(index) {
  * obj.addAtIndex(index,val)
  * obj.deleteAtIndex(index)
  */
-
-MyLinkedList.prototype.getLength = function() {
-    let len = 0, cur = this.head;
-    while (cur !== null) {
-        cur = cur.next;
-        len++;
-    }
-    return len;
-};
