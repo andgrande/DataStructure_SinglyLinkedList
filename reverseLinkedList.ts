@@ -36,3 +36,5 @@ function reverseList(head: ListNode | null): ListNode | null {
 
   return prev;
 }
+
+// attaching this code to the Linked List code might require adapation in the "this.head" object, for exemple: "obj.head = prev"
